@@ -22,14 +22,14 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public ResponseEntity<Void> saveMember(@RequestBody SaveMemberRequest request){
+    public ResponseEntity<Void> saveMember(@RequestBody SaveMemberRequest request) {
         System.out.println(request.getTeamname());
         memberService.saveMember(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/member")
-    public ResponseEntity<List<GetAllMembersResponse>> getAllMembers(){
+    public ResponseEntity<List<GetAllMembersResponse>> getAllMembers() {
         List<GetAllMembersResponse> allMembersList = memberService.getAllMembers();
         return ResponseEntity.ok().body(allMembersList);
     }

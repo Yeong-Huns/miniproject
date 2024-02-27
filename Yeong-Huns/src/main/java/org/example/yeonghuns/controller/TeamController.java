@@ -1,13 +1,11 @@
 package org.example.yeonghuns.controller;
 
+import org.example.yeonghuns.dto.team.request.CreateTeamRequest;
 import org.example.yeonghuns.dto.team.response.GetAllTeamsResponse;
 import org.example.yeonghuns.service.team.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,13 +19,13 @@ public class TeamController {
     }
 
     @PostMapping("/team")
-    public ResponseEntity<Void> createTeam(@RequestParam String name){
-        teamService.createTeam(name);
+    public ResponseEntity<Void> createTeam(@RequestBody CreateTeamRequest request) {
+        teamService.createTeam(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/team")
-    public ResponseEntity<List<GetAllTeamsResponse>> getAllTeams(){
+    public ResponseEntity<List<GetAllTeamsResponse>> getAllTeams() {
         List<GetAllTeamsResponse> allTeamsList = teamService.getAllTeams();
         return ResponseEntity.ok().body(allTeamsList);
     }

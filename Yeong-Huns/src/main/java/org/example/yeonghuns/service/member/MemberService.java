@@ -5,7 +5,7 @@ import org.example.yeonghuns.domain.Team;
 import org.example.yeonghuns.dto.member.request.SaveMemberRequest;
 import org.example.yeonghuns.dto.member.response.GetAllMembersResponse;
 import org.example.yeonghuns.repository.MemberRepository;
-import org.example.yeonghuns.repository.TeamRepository;
+import org.example.yeonghuns.service.team.TeamService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,24 +15,20 @@ import java.util.List;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final TeamRepository teamRepository;
+    private final TeamService teamService;
 
-    public MemberService(MemberRepository memberRepository, TeamRepository teamRepository) {
+    public MemberService(MemberRepository memberRepository, TeamService teamService) {
         this.memberRepository = memberRepository;
-        this.teamRepository = teamRepository;
+        this.teamService = teamService;
     }
 
     @Transactional
-    public void saveMember(SaveMemberRequest request){
-        Team team = teamRepository.findByName(request.getTeamname()).orElseThrow(IllegalArgumentException::new);
-        if(request.getIsManager()){ updateManager(team, request);}
+    public void saveMember(SaveMemberRequest request) {
+        Team team = teamService.findTeamByName(request);
         memberRepository.save(request.toEntity(team));
     }
-    public void updateManager(Team team, SaveMemberRequest request){
-        if(team.getManager().isEmpty()) team.updateManager(request.get);
-    }
 
-    public List<GetAllMembersResponse> getAllMembers(){
+    public List<GetAllMembersResponse> getAllMembers() {
         return memberRepository.findAll().stream().map(Member::toResponse).toList();
     }
 }
