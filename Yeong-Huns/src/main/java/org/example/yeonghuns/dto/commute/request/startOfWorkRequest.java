@@ -15,7 +15,7 @@ import org.example.yeonghuns.domain.Member;
  * -----------------------------------------------------------
  * 2024-03-04        Yeong-Huns       최초 생성
  */
-public record startOfWorkRequest(@NotNull long id) {
+public record StartOfWorkRequest(@NotNull long id) {
     public Commute toEntity(Member member){
         return Commute.builder()
                 .member(member)

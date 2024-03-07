@@ -13,5 +13,5 @@ import jakarta.validation.constraints.NotNull;
  * -----------------------------------------------------------
  * 2024-03-04        Yeong-Huns       최초 생성
  */
-public record endOfWorkRequest(@NotNull long id) {
+public record EndOfWorkRequest(@NotNull long id) {
 }
