@@ -1,6 +1,8 @@
 package org.example.yeonghuns.service.team;
 
 import lombok.RequiredArgsConstructor;
+import org.example.yeonghuns.config.Error.ErrorCode;
+import org.example.yeonghuns.config.Error.exception.NotFoundException;
 import org.example.yeonghuns.config.Error.exception.member.MemberNotFoundException;
 import org.example.yeonghuns.config.Error.exception.team.TeamAlreadyExistsException;
 import org.example.yeonghuns.config.Error.exception.team.TeamNotFoundException;
@@ -30,15 +32,15 @@ public class TeamService {
     }
 
     public Team findTeamByName(SaveMemberRequest request) {
-        return teamRepository.findByName(request.teamName()).orElseThrow(TeamNotFoundException::new);
+        return teamRepository.findByName(request.teamName()).orElseThrow(()->new NotFoundException(ErrorCode.TEAM_NOT_FOUND));
     }
     @Transactional
     public void updateManager(Team team, Member member) {
         if (team.getManager() == null) team.updateManager(member.getName());
         else {
-            Member previous_Manager = memberRepository.findByTeamIdAndRoleIsTrueAndIdNot(team.getId(), member.getId())
+            Member previousManager = memberRepository.findByTeamIdAndRoleIsTrueAndIdNot(team.getId(), member.getId())
                     .orElseThrow(MemberNotFoundException::new);
-            previous_Manager.changeRole();
+            previousManager.changeRole();
             team.updateManager(member.getName());
         }
         teamRepository.save(team);

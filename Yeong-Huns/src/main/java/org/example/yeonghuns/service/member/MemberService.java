@@ -24,7 +24,9 @@ public class MemberService {
     public void saveMember(SaveMemberRequest request) {
         Team team = teamService.findTeamByName(request);
         Member member = memberRepository.save(request.toEntity(team));
-        if(request.isManager()) teamService.updateManager(team, member);
+        if(request.isManager()) {
+            team.updateManager(member.getName());
+        }
     }
 
     @Transactional(readOnly = true)
